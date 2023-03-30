@@ -1,0 +1,1843 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Aitaca App API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users/me": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get Current User",
+        "description": "Get the current user data",
+        "operationId": "Get_Current_User_users_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__users_schemas__User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Validate Login Data",
+        "description": "Validates Login data returning a bearer auth token",
+        "operationId": "Validate_login_data_users_login_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_Validate_login_data_users_login_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incorrect username or password"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/": {
+      "put": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Updates User Data",
+        "description": "Updates data from the user excepts Password. You **must** indicates sex and height.",
+        "operationId": "Updates_user_data_users__put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "New User data",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UserEdit"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__users_schemas__User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Registe New User",
+        "description": "Register a new user",
+        "operationId": "Registe_new_user_users__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "New User data",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/UserCreate"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Email in use"
+          },
+          "404": {
+            "description": "Unknown invitation token"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Deletes User",
+        "description": "Removes the user from the server",
+        "operationId": "Deletes_user_users__delete",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Updates User Password",
+        "description": "Updates user password.",
+        "operationId": "Updates_user_password_users__patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Password data",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PasswordRenew"
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__users_schemas__User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "400": {
+            "description": "Invalid current password"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/background/removal": {
+      "post": {
+        "tags": [
+          "background"
+        ],
+        "summary": "Remove The Background Of An Image",
+        "description": "Remove background from image",
+        "operationId": "Remove_the_background_of_an_image_background_removal_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_Remove_the_background_of_an_image_background_removal_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Image without background",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BackgroundResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "415": {
+            "description": "The file is not an image"
+          },
+          "400": {
+            "description": "Foreground not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/measurements/ia": {
+      "post": {
+        "tags": [
+          "measurements"
+        ],
+        "summary": "Generates A New Measurement With Ia Model",
+        "description": "Generate a new measurement process from 4 photos.",
+        "operationId": "Generates_a_new_measurement_with_IA_Model_measurements_ia_post",
+        "parameters": [
+          {
+            "description": "Height of the user, required by the model",
+            "required": false,
+            "schema": {
+              "title": "User height ",
+              "type": "number",
+              "description": "Height of the user, required by the model"
+            },
+            "name": "height",
+            "in": "query"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImagesInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasurementOut"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "400": {
+            "description": "Height not indicated"
+          },
+          "202": {
+            "description": "Request accepted, but timout passed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasurementOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/measurements/manual": {
+      "post": {
+        "tags": [
+          "measurements"
+        ],
+        "summary": "Add A Measurement Associated To The User",
+        "description": "Create a new manual measurement associated to the user",
+        "operationId": "Add_a_measurement_associated_to_the_user_measurements_manual_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementCreate"
+              },
+              "examples": {
+                "normal": {
+                  "summary": "A normal example",
+                  "description": "A **normal** measurement works correctly.",
+                  "value": {
+                    "hips": 136,
+                    "waist": 90,
+                    "chest": 140,
+                    "neck": 85,
+                    "shoulders": 110,
+                    "height": 185,
+                    "sleeveOutseamLeft": 254
+                  }
+                },
+                "invalid": {
+                  "summary": "An invalid example",
+                  "description": "Invalid data is rejected with an error",
+                  "value": {
+                    "hips": 100
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "400": {
+            "description": "Height not indicated"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/measurements/": {
+      "get": {
+        "tags": [
+          "measurements"
+        ],
+        "summary": "Get User Measurements",
+        "description": "Get measurements associeted with the user",
+        "operationId": "Get_user_measurements_measurements__get",
+        "parameters": [
+          {
+            "description": "Initial value of the total available. Allows to work with pagination",
+            "required": false,
+            "schema": {
+              "title": "Skipped values",
+              "minimum": 0.0,
+              "type": "integer",
+              "description": "Initial value of the total available. Allows to work with pagination",
+              "default": 0
+            },
+            "name": "skip",
+            "in": "query"
+          },
+          {
+            "description": "Maximum number of values returned. Allows customised pagination.",
+            "required": false,
+            "schema": {
+              "title": "Number of values returned",
+              "exclusiveMinimum": 0.0,
+              "type": "integer",
+              "description": "Maximum number of values returned. Allows customised pagination.",
+              "default": 100
+            },
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasurementList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/FFF/users/me": {
+      "get": {
+        "tags": [
+          "users",
+          "fff"
+        ],
+        "summary": "Get Current User For Fff",
+        "description": "Get the current user data for FFF",
+        "operationId": "Get_Current_User_for_FFF_FFF_users_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/app__schemas__fff_users_schemas__User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/FFF/users/login": {
+      "post": {
+        "tags": [
+          "users",
+          "fff"
+        ],
+        "summary": "Validate Login Data Or Register For Fff",
+        "description": "Validates Login data or do a register returning a bearer auth token for FFF",
+        "operationId": "Validate_login_data_or_register_for_FFF_FFF_users_login_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_Validate_login_data_or_register_for_FFF_FFF_users_login_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Incorrect username or password"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/FFF/measurements/ia": {
+      "post": {
+        "tags": [
+          "measurements",
+          "fff"
+        ],
+        "summary": "Generates A New Measurement With Ia Model For Fff",
+        "description": "Generate a new measurement process from 4 photos for FFF.",
+        "operationId": "Generates_a_new_measurement_with_IA_Model_for_FFF_FFF_measurements_ia_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_Generates_a_new_measurement_with_IA_Model_for_FFF_FFF_measurements_ia_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/FFF/measurements/manual": {
+      "post": {
+        "tags": [
+          "measurements",
+          "fff"
+        ],
+        "summary": "Add A Measurement Associated To The User For Fff",
+        "description": "Create a new manual measurement associated to the user for FFF",
+        "operationId": "Add_a_measurement_associated_to_the_user_for_FFF_FFF_measurements_manual_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FFFMeasurementCreate"
+              },
+              "examples": {
+                "normal": {
+                  "summary": "A normal example",
+                  "description": "A **normal** measurement works correctly.",
+                  "value": {
+                    "hips": 136,
+                    "waist": 90,
+                    "chest": 140,
+                    "neck": 85,
+                    "shoulders": 110,
+                    "height": 185,
+                    "sleeveOutseamLeft": 254,
+                    "sex": "m"
+                  }
+                },
+                "invalid": {
+                  "summary": "An invalid example",
+                  "description": "Invalid data is rejected with an error",
+                  "value": {
+                    "hips": 100
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/FFF/background/removal": {
+      "post": {
+        "tags": [
+          "background",
+          "fff"
+        ],
+        "summary": "Remove The Background Of An Image",
+        "description": "Remove background from image for FFF",
+        "operationId": "Remove_the_background_of_an_image_FFF_background_removal_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_Remove_the_background_of_an_image_FFF_background_removal_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Image without background"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Not enought permissions"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "409": {
+            "description": "Test process ended"
+          },
+          "415": {
+            "description": "The file is not an image"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BackgroundResponse": {
+        "title": "BackgroundResponse",
+        "required": [
+          "uuid",
+          "image"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "title": "Image uuid",
+            "type": "string",
+            "description": "Image UUID used for measurement process if image is valid."
+          },
+          "image": {
+            "title": "Image return",
+            "type": "string",
+            "description": "Image returned without background in base-64 format"
+          }
+        }
+      },
+      "Body_Generates_a_new_measurement_with_IA_Model_for_FFF_FFF_measurements_ia_post": {
+        "title": "Body_Generates_a_new_measurement_with_IA_Model_for_FFF_FFF_measurements_ia_post",
+        "required": [
+          "front_down",
+          "front_up",
+          "side_down",
+          "side_up"
+        ],
+        "type": "object",
+        "properties": {
+          "front_down": {
+            "title": "Front with arms down",
+            "type": "string",
+            "description": "Frontal image with arms down",
+            "format": "binary"
+          },
+          "front_up": {
+            "title": "Front with arms up",
+            "type": "string",
+            "description": "Frontal image with arms up",
+            "format": "binary"
+          },
+          "side_down": {
+            "title": "Side with arms down",
+            "type": "string",
+            "description": "Side image with arms down",
+            "format": "binary"
+          },
+          "side_up": {
+            "title": "Side with arms up",
+            "type": "string",
+            "description": "Side image with arms up",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_Remove_the_background_of_an_image_FFF_background_removal_post": {
+        "title": "Body_Remove_the_background_of_an_image_FFF_background_removal_post",
+        "required": [
+          "original_image"
+        ],
+        "type": "object",
+        "properties": {
+          "original_image": {
+            "title": "Original Image",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_Remove_the_background_of_an_image_background_removal_post": {
+        "title": "Body_Remove_the_background_of_an_image_background_removal_post",
+        "required": [
+          "original_image"
+        ],
+        "type": "object",
+        "properties": {
+          "original_image": {
+            "title": "Original Image",
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      },
+      "Body_Validate_login_data_or_register_for_FFF_FFF_users_login_post": {
+        "title": "Body_Validate_login_data_or_register_for_FFF_FFF_users_login_post",
+        "required": [
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "User email",
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "Body_Validate_login_data_users_login_post": {
+        "title": "Body_Validate_login_data_users_login_post",
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "title": "User email",
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "title": "User password",
+            "type": "string",
+            "format": "password",
+            "writeOnly": true
+          }
+        }
+      },
+      "FFFMeasurementCreate": {
+        "title": "FFFMeasurementCreate",
+        "required": [
+          "height",
+          "sex"
+        ],
+        "type": "object",
+        "properties": {
+          "height": {
+            "title": "Subject height",
+            "type": "number",
+            "description": "The height of the user, required by the IA model"
+          },
+          "hips": {
+            "title": "Hips",
+            "type": "number"
+          },
+          "waist": {
+            "title": "Waist",
+            "type": "number"
+          },
+          "chest": {
+            "title": "Chest",
+            "type": "number"
+          },
+          "neck": {
+            "title": "Neck",
+            "type": "number"
+          },
+          "shoulders": {
+            "title": "Shoulders",
+            "type": "number"
+          },
+          "sleeveOutseamLeft": {
+            "title": "Sleeveoutseamleft",
+            "type": "number"
+          },
+          "sex": {
+            "title": "Subject sex",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              }
+            ],
+            "description": "The sex of the user, required by the IA model"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "ImagesInput": {
+        "title": "ImagesInput",
+        "required": [
+          "front_down",
+          "front_up",
+          "side_down",
+          "side_up"
+        ],
+        "type": "object",
+        "properties": {
+          "front_down": {
+            "title": "Front with arms down",
+            "type": "string",
+            "description": "Frontal image with arms down"
+          },
+          "front_up": {
+            "title": "Front with arms up",
+            "type": "string",
+            "description": "Frontal image with arms up"
+          },
+          "side_down": {
+            "title": "Side with arms down",
+            "type": "string",
+            "description": "Side image with arms down"
+          },
+          "side_up": {
+            "title": "Side with arms up",
+            "type": "string",
+            "description": "Side image with arms up"
+          }
+        }
+      },
+      "MeasurementCreate": {
+        "title": "MeasurementCreate",
+        "required": [
+          "height"
+        ],
+        "type": "object",
+        "properties": {
+          "height": {
+            "title": "Subject height",
+            "type": "number",
+            "description": "The height of the user, required by the IA model"
+          },
+          "hips": {
+            "title": "Hips",
+            "type": "number"
+          },
+          "waist": {
+            "title": "Waist",
+            "type": "number"
+          },
+          "chest": {
+            "title": "Chest",
+            "type": "number"
+          },
+          "neck": {
+            "title": "Neck",
+            "type": "number"
+          },
+          "shoulders": {
+            "title": "Shoulders",
+            "type": "number"
+          },
+          "sleeveOutseamLeft": {
+            "title": "Sleeveoutseamleft",
+            "type": "number"
+          },
+          "sex": {
+            "title": "Subject sex",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              }
+            ],
+            "description": "The sex of the user, required by the IA model"
+          }
+        }
+      },
+      "MeasurementList": {
+        "title": "MeasurementList",
+        "required": [
+          "measurements",
+          "size"
+        ],
+        "type": "object",
+        "properties": {
+          "measurements": {
+            "title": "Measurements",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MeasurementOut"
+            }
+          },
+          "size": {
+            "title": "Total count of measurements",
+            "type": "integer",
+            "description": "Total count of measurement without pagination"
+          }
+        }
+      },
+      "MeasurementOut": {
+        "title": "MeasurementOut",
+        "required": [
+          "height",
+          "dateMeasurement",
+          "id",
+          "manual",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "height": {
+            "title": "The subject height",
+            "type": "number",
+            "description": "The height of the subject used to calculate the measurement."
+          },
+          "hips": {
+            "title": "Hips",
+            "type": "number"
+          },
+          "waist": {
+            "title": "Waist",
+            "type": "number"
+          },
+          "chest": {
+            "title": "Chest",
+            "type": "number"
+          },
+          "neck": {
+            "title": "Neck",
+            "type": "number"
+          },
+          "shoulders": {
+            "title": "Shoulders",
+            "type": "number"
+          },
+          "sleeveOutseamLeft": {
+            "title": "Sleeveoutseamleft",
+            "type": "number"
+          },
+          "dateMeasurement": {
+            "title": "The date of the measurement",
+            "type": "string",
+            "description": "Indicates the date when the measurement was taken",
+            "format": "date-time"
+          },
+          "id": {
+            "title": "Identifier of the measure",
+            "type": "integer",
+            "description": "Unique identifier of the measurement"
+          },
+          "manual": {
+            "title": "Type of measurement",
+            "type": "boolean",
+            "description": "Determines whether the measurement has been performed by the AI model or the data has been entered manually by the user"
+          },
+          "agent": {
+            "title": "Request agent",
+            "type": "string",
+            "description": "Determines the agent used to generate the measurement"
+          },
+          "status": {
+            "title": "Measurement status",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MeasurementStatus"
+              }
+            ],
+            "description": "Displays the current status of the measurement"
+          }
+        },
+        "description": "The measurement Object"
+      },
+      "MeasurementStatus": {
+        "title": "MeasurementStatus",
+        "enum": [
+          "CREATED",
+          "BUSY",
+          "READY",
+          "PARTIAL",
+          "ERROR"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "MessageResponse": {
+        "title": "MessageResponse",
+        "type": "object",
+        "properties": {
+          "msg": {
+            "title": "Output",
+            "type": "string",
+            "description": "Output Message",
+            "default": "ACK"
+          }
+        }
+      },
+      "PasswordRenew": {
+        "title": "PasswordRenew",
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "type": "object",
+        "properties": {
+          "current_password": {
+            "title": "The user current password",
+            "type": "string",
+            "description": "The user current password in clear text",
+            "format": "password",
+            "writeOnly": true
+          },
+          "new_password": {
+            "title": "The new password",
+            "minLength": 8,
+            "type": "string",
+            "description": "The new password for be setted",
+            "format": "password",
+            "writeOnly": true
+          }
+        }
+      },
+      "Sex": {
+        "title": "Sex",
+        "enum": [
+          "m",
+          "f"
+        ],
+        "type": "string",
+        "description": "An enumeration."
+      },
+      "Status": {
+        "title": "Status",
+        "required": [
+          "manual",
+          "ia"
+        ],
+        "type": "object",
+        "properties": {
+          "manual": {
+            "title": "Manual measurement available",
+            "type": "boolean",
+            "description": "Determines whether the possibility to send a manual measurement is available."
+          },
+          "ia": {
+            "title": "IA measurement available",
+            "type": "boolean",
+            "description": "Determines whether the possibility to request an ia measurement is available."
+          }
+        }
+      },
+      "Token": {
+        "title": "Token",
+        "required": [
+          "access_token"
+        ],
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "title": "Access token",
+            "type": "string",
+            "description": "Authentication token generated for the user"
+          },
+          "token_type": {
+            "title": "Type of auth token",
+            "type": "string",
+            "description": "Type of authentication token issued for future communications",
+            "default": "Bearer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        }
+      },
+      "UserCreate": {
+        "title": "UserCreate",
+        "required": [
+          "password",
+          "email",
+          "token",
+          "accept_terms",
+          "accept_privacy"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Subject name",
+            "type": "string",
+            "description": "Name of the user associated with the account"
+          },
+          "familyName": {
+            "title": "last name",
+            "type": "string",
+            "description": "Last name of the user"
+          },
+          "telephone": {
+            "title": "Subject phone",
+            "type": "string",
+            "description": "User contact phone"
+          },
+          "postalCode": {
+            "title": "The postal code",
+            "type": "string",
+            "description": "The postal code. For example, 94043."
+          },
+          "addressCountry": {
+            "title": "The country",
+            "type": "string",
+            "description": "The country. For example, US. You must provide the two-letter ISO 3166-1 alpha-2 country code."
+          },
+          "addressLocality": {
+            "title": "The locality",
+            "type": "string",
+            "description": "The locality in which the street address is, and which is in the region. For example, Mountain View."
+          },
+          "language": {
+            "title": "The language preference",
+            "type": "string",
+            "description": "The language preference using the IETF BCP 47 standard language codes",
+            "default": "es"
+          },
+          "birthDate": {
+            "title": "Birth date",
+            "type": "string",
+            "description": "The date of birth",
+            "format": "date"
+          },
+          "password": {
+            "title": "The user password",
+            "type": "string",
+            "description": "The user password in clear text",
+            "format": "password",
+            "writeOnly": true
+          },
+          "email": {
+            "title": "The email",
+            "type": "string",
+            "description": "Email of the user",
+            "format": "email"
+          },
+          "token": {
+            "title": "Professional Token",
+            "type": "string",
+            "description": "Token of the professional associated with the user"
+          },
+          "sex": {
+            "title": "Subject sex",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              }
+            ],
+            "description": "The sex of the user, required by the IA model"
+          },
+          "height": {
+            "title": "Subject height",
+            "type": "number",
+            "description": "The height of the user, required by the IA model"
+          },
+          "accept_terms": {
+            "title": "Terms accepted",
+            "type": "boolean"
+          },
+          "accept_privacy": {
+            "title": "Privacy accepted",
+            "type": "boolean"
+          }
+        },
+        "description": "The new user object"
+      },
+      "UserEdit": {
+        "title": "UserEdit",
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Subject name",
+            "type": "string",
+            "description": "Name of the user associated with the account"
+          },
+          "familyName": {
+            "title": "last name",
+            "type": "string",
+            "description": "Last name of the user"
+          },
+          "telephone": {
+            "title": "Subject phone",
+            "type": "string",
+            "description": "User contact phone"
+          },
+          "postalCode": {
+            "title": "The postal code",
+            "type": "string",
+            "description": "The postal code. For example, 94043."
+          },
+          "addressCountry": {
+            "title": "The country",
+            "type": "string",
+            "description": "The country. For example, US. You must provide the two-letter ISO 3166-1 alpha-2 country code."
+          },
+          "addressLocality": {
+            "title": "The locality",
+            "type": "string",
+            "description": "The locality in which the street address is, and which is in the region. For example, Mountain View."
+          },
+          "language": {
+            "title": "The language preference",
+            "type": "string",
+            "description": "The language preference using the IETF BCP 47 standard language codes",
+            "default": "es"
+          },
+          "birthDate": {
+            "title": "Birth date",
+            "type": "string",
+            "description": "The date of birth",
+            "format": "date"
+          },
+          "sex": {
+            "title": "Subject sex",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              }
+            ],
+            "description": "The sex of the user, required by the IA model"
+          },
+          "height": {
+            "title": "Subject height",
+            "type": "number",
+            "description": "The height of the user, required by the IA model"
+          }
+        },
+        "description": "The user Editable object"
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      },
+      "app__schemas__fff_users_schemas__User": {
+        "title": "User",
+        "required": [
+          "id",
+          "email",
+          "dateCreated"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Subject name",
+            "type": "string",
+            "description": "Name of the user associated with the account"
+          },
+          "familyName": {
+            "title": "last name",
+            "type": "string",
+            "description": "Last name of the user"
+          },
+          "telephone": {
+            "title": "Subject phone",
+            "type": "string",
+            "description": "User contact phone"
+          },
+          "postalCode": {
+            "title": "The postal code",
+            "type": "string",
+            "description": "The postal code. For example, 94043."
+          },
+          "addressCountry": {
+            "title": "The country",
+            "type": "string",
+            "description": "The country. For example, US. You must provide the two-letter ISO 3166-1 alpha-2 country code."
+          },
+          "addressLocality": {
+            "title": "The locality",
+            "type": "string",
+            "description": "The locality in which the street address is, and which is in the region. For example, Mountain View."
+          },
+          "language": {
+            "title": "The language preference",
+            "type": "string",
+            "description": "The language preference using the IETF BCP 47 standard language codes",
+            "default": "es"
+          },
+          "sex": {
+            "title": "Subject sex",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              }
+            ],
+            "description": "The sex of the user, required by the IA model"
+          },
+          "height": {
+            "title": "Subject height",
+            "type": "number",
+            "description": "The height of the user, required by the IA model"
+          },
+          "birthDate": {
+            "title": "Birth date",
+            "type": "string",
+            "description": "The date of birth",
+            "format": "date"
+          },
+          "id": {
+            "title": "User ID",
+            "type": "integer",
+            "description": "UUID of the user"
+          },
+          "dateAcceptedTerms": {
+            "title": "Terms accepted at",
+            "type": "string",
+            "description": "Date of acceptance of terms and conditions",
+            "format": "date-time"
+          },
+          "email": {
+            "title": "The email",
+            "type": "string",
+            "description": "Email of the entity associated with the account",
+            "format": "email"
+          },
+          "dateCreated": {
+            "title": "Created at",
+            "type": "string",
+            "description": "Account creation date",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        },
+        "description": "The user object"
+      },
+      "app__schemas__users_schemas__User": {
+        "title": "User",
+        "required": [
+          "id",
+          "email",
+          "dateCreated",
+          "enabled",
+          "partialAccess",
+          "fullRegister",
+          "fullAccess",
+          "pendingFields",
+          "required_fields"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Subject name",
+            "type": "string",
+            "description": "Name of the user associated with the account"
+          },
+          "familyName": {
+            "title": "last name",
+            "type": "string",
+            "description": "Last name of the user"
+          },
+          "telephone": {
+            "title": "Subject phone",
+            "type": "string",
+            "description": "User contact phone"
+          },
+          "postalCode": {
+            "title": "The postal code",
+            "type": "string",
+            "description": "The postal code. For example, 94043."
+          },
+          "addressCountry": {
+            "title": "The country",
+            "type": "string",
+            "description": "The country. For example, US. You must provide the two-letter ISO 3166-1 alpha-2 country code."
+          },
+          "addressLocality": {
+            "title": "The locality",
+            "type": "string",
+            "description": "The locality in which the street address is, and which is in the region. For example, Mountain View."
+          },
+          "language": {
+            "title": "The language preference",
+            "type": "string",
+            "description": "The language preference using the IETF BCP 47 standard language codes",
+            "default": "es"
+          },
+          "birthDate": {
+            "title": "Birth date",
+            "type": "string",
+            "description": "The date of birth",
+            "format": "date"
+          },
+          "id": {
+            "title": "User ID",
+            "type": "integer",
+            "description": "UUID of the user"
+          },
+          "dateAcceptedTerms": {
+            "title": "Terms accepted at",
+            "type": "string",
+            "description": "Date of acceptance of terms and conditions",
+            "format": "date-time"
+          },
+          "dateAcceptedPrivacy": {
+            "title": "Privacy accepted at",
+            "type": "string",
+            "description": "Date of acceptance of Privacy conditions",
+            "format": "date-time"
+          },
+          "email": {
+            "title": "The email",
+            "type": "string",
+            "description": "Email of the entity associated with the account",
+            "format": "email"
+          },
+          "sex": {
+            "title": "Subject sex",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Sex"
+              }
+            ],
+            "description": "The sex of the user, required by the IA model"
+          },
+          "height": {
+            "title": "Subject height",
+            "type": "number",
+            "description": "The height of the user, required by the IA model"
+          },
+          "dateCreated": {
+            "title": "Created at",
+            "type": "string",
+            "description": "Account creation date",
+            "format": "date-time"
+          },
+          "enabled": {
+            "title": "Status of the account",
+            "type": "boolean",
+            "description": "Determines if the account is active, if False, the account is inaccessible."
+          },
+          "partialAccess": {
+            "title": "Account with access to relations control",
+            "type": "boolean",
+            "description": "Determines if the account is active (with accepted terms), determining if the user has access control relations."
+          },
+          "fullRegister": {
+            "title": "Account with full register",
+            "type": "boolean",
+            "description": "Determines if the account is full registered"
+          },
+          "fullAccess": {
+            "title": "Account with full access",
+            "type": "boolean",
+            "description": "The account is active and under an active plan."
+          },
+          "pendingFields": {
+            "title": "Pending fields",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Fiels pending of complete, required for full register"
+          },
+          "required_fields": {
+            "title": "Required fields",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Fields that **must** be added for full register"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          }
+        },
+        "description": "The user object"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "users/login"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "users",
+      "description": "Operations with users"
+    },
+    {
+      "name": "measurements",
+      "description": "Operations related to the measurement process and its results"
+    },
+    {
+      "name": "background",
+      "description": "Operations related with background extraction"
+    }
+  ]
+}
